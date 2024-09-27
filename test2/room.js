@@ -14,7 +14,9 @@ wss.on('connection', (ws) => {
     let username = null;
 
     ws.on("message", (message) => {
-        ws.send(JSON.stringify(message))
+        console.log(Buffer.from(message))
+        ws.send(JSON.stringify(message));
+        
     })
 })
 

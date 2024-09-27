@@ -35,31 +35,50 @@
 
     <script>
         const ws = new WebSocket("ws://localhost:8080");
-        const buttonRoom1 = document.querySelector(".div-1 in-room-1");
-        const buttonRoom2 = document.querySelector(".div-2 in-room-2");
-        const buttonRoom3 = document.querySelector(".div-3 in-room-3");
-        const buttonOutRom1 = document.querySelector(".div-1 out-room-1");
-        const buttonOutRom2 = document.querySelector(".div-2 out-room-2");
-        const buttonOutRom3 = document.querySelector(".div-3 out-room-3");
+        const buttonRoom1 = document.querySelector(".div-1 .in-room-1");
+        const buttonRoom2 = document.querySelector(".div-2 .in-room-2");
+        const buttonRoom3 = document.querySelector(".div-3 .in-room-3");
+        const buttonOutRoom1 = document.querySelector(".div-1 .out-room-1");
+        const buttonOutRoom2 = document.querySelector(".div-2 .out-room-2");
+        const buttonOutRoom3 = document.querySelector(".div-3 .out-room-3");
         const welcomeName = document.querySelector(".welcome-name");
         const username = prompt("Nhập tên của bạn vào đây trước");
 
-        welcomeName.textContent = `Chào mừng ${username} đến với Bình Nguyên Vô Tận !!!!` 
+        welcomeName.textContent = `Chào mừng ${username} đến với Bình Nguyên Vô Tận !!!!` ;
         
-
+        // Bát đầu kết nối tới server
         ws.onopen = () => {
-            ws.send(JSON.stringify({
-                type: "join-room",
-                username: username,
-                room: ""
-            }))
+            ws.send(`${username} đã kết nối tới server`)
         }
 
+        // Nhận tin nhắn từ server
         ws.onmessage = (event) => {
             let data = JSON.parse(event.data);
             console.log(data)
-
         }
+
+        // Hàm sử lý các hành động
+        const handleSendData = (room, action) => {
+          const message = {
+            username : username,
+            action : action,
+            room : room
+          };
+          ws.send(JSON.stringify(message));
+          console.log(`${username} is ${action} ${room}`)
+        }
+
+        // Tham gia và thoát room-1
+        buttonRoom1.addEventListener("click",()  => handleSendData("room-1", "join"))
+        buttonOutRoom1.addEventListener("click",()  => handleSendData("room-1", "leave"))
+        
+        // Tham gia và thoát room-2
+        buttonRoom2.addEventListener("click",()  => handleSendData("room-2", "join"))
+        buttonOutRoom2.addEventListener("click",()  => handleSendData("room-2", "leave"))
+
+        // Tham gia và thoát room-3
+        buttonRoom3.addEventListener("click",()  => handleSendData("room-3", "join"))
+        buttonOutRoom3.addEventListener("click",()  => handleSendData("room-3", "leave"))
 
     </script>
   </body>
