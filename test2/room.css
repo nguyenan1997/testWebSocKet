@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.room{
+    width: 300px;
+    height: 400px;
+    border: 1px solid black;
+}
+
+.layer{
+    text-align: center;
+}
+
+.welcome-name{
+    text-align: center;
+}

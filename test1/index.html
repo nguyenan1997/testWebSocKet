@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text">
+    <button>Send</button>
+    <ul style="list-style-type: none;">
+    </ul>
+
+    <script>
+        const socket = new WebSocket("ws://localhost:8080");
+        let input = document.querySelector("input");
+        let buttonSend = document.querySelector("button");
+        let divChat = document.querySelector("ul");
+        let id = Math.random();
+
+        // Mở cổng kết nối web-socket
+        socket.onopen = () => {
+            console.log("Đã kết nối tới Sever");
+        }
+
+        // Nhận được tin nhắn từ server
+        socket.onmessage = (event) => {
+            const listComments = document.createElement("li");
+            listComments.textContent = event.data;
+            divChat.appendChild(listComments)
+
+        }
+        // Lắng nghe sự kiện khi Click vào ô Send thì sẽ gửi dữ liệu lên server
+        buttonSend.addEventListener("click", () => { 
+            const message = `${id} - ${input.value}`;
+            
+            if(message){
+                socket.send(message);
+                input.value = "";
+            }
+        })
+
+    </script>
+</body>
+</html>

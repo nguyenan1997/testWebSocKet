@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room Game</title>
+    <link rel="stylesheet" href="room.css">
+  </head>
+  <body>
+    <h1 class="welcome-name"></h1>
+    <div class="container">
+      <div class="layer div-1">
+        <h1>Room 1</h1>
+        <div class="room"></div>
+        <button class="in-room-1">Tham gia</button>
+        <button class="out-room-1">Thoát</button>
+      </div>
+
+      <div class="layer div-2">
+        <h1>Room 2</h1>
+
+        <div class="room"></div>
+        <button class="in-room-2">Tham gia</button>
+        <button class="out-room-2">Thoát</button>
+      </div>
+      
+      <div class="layer div-3">
+        <h1>Room 3</h1>
+        <div class="room"></div>
+        <button class="in-room-3">Tham gia</button>
+        <button class="out-room-3">Thoát</button>
+      </div>
+
+    </div>
+
+    <script>
+        const ws = new WebSocket("ws://localhost:8080");
+        const buttonRoom1 = document.querySelector(".div-1 in-room-1");
+        const buttonRoom2 = document.querySelector(".div-2 in-room-2");
+        const buttonRoom3 = document.querySelector(".div-3 in-room-3");
+        const buttonOutRom1 = document.querySelector(".div-1 out-room-1");
+        const buttonOutRom2 = document.querySelector(".div-2 out-room-2");
+        const buttonOutRom3 = document.querySelector(".div-3 out-room-3");
+        const welcomeName = document.querySelector(".welcome-name");
+        const username = prompt("Nhập tên của bạn vào đây trước");
+
+        welcomeName.textContent = `Chào mừng ${username} đến với Bình Nguyên Vô Tận !!!!` 
+        
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                type: "join-room",
+                username: username,
+                room: ""
+            }))
+        }
+
+        ws.onmessage = (event) => {
+            let data = JSON.parse(event.data);
+            console.log(data)
+
+        }
+
+    </script>
+  </body>
+</html>
